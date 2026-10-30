@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="os_fotos_gallery" name="Galeria de Fotos OS">
+    <template id="os_fotos_gallery" name="Galeria de Fotos OS" t-name="ordem_servico_photos.os_fotos_gallery">
         <div class="o_os_fotos_gallery">
             <div t-if="attachments.length" class="o_os_fotos_grid">
                 <t t-foreach="attachments" t-as="att" t-index="idx">
@@ -19,7 +19,7 @@
             <div class="o_os_lightbox o_hidden">
                 <div class="o_os_lightbox_backdrop"></div>
                 <div class="o_os_lightbox_content">
-                    <button class="o_os_close_lightbox">&times;</button>
+                    <button class="o_os_close_lightbox">&#215;</button>
                     <img class="o_os_lightbox_img" src="" alt=""/>
                     <div class="o_os_lightbox_info">
                         <span class="o_os_lightbox_caption"></span>
