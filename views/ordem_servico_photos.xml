@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Wizard: Anexar Foto -->
+    <record id="os_fotos_wizard_view" model="ir.ui.view">
+        <field name="name">os.fotos.wizard.form</field>
+        <field name="model">os.fotos.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Anexar Foto">
+                <group>
+                    <field name="setor" string="Setor"/>
+                    <field name="arquivo" filename="nome_arquivo" widget="image"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="os_fotos_wizard_action" model="ir.actions.act_window">
+        <field name="name">Anexar Foto</field>
+        <field name="res_model">os.fotos.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Template da galeria de miniaturas com zoom -->
+    <template id="os_fotos_gallery" name="Galeria de Fotos OS">
+        <div class="o_os_fotos_gallery">
+            <div t-if="attachments.length" class="o_os_fotos_grid">
+                <t t-foreach="attachments" t-as="att" t-index="idx">
+                    <img t-att-src="att.datas ? ('data:' + att.mimetype + ';base64,' + att.datas) : (att.url || '/web/content/' + att.id)"
+                         t-att-title="att.name"
+                         t-att-data-index="idx"
+                         class="o_os_foto_thumb"
+                         alt=""/>
+                </t>
+            </div>
+            <div t-if="!attachments.length" class="o_os_fotos_empty">
+                <span>Sem fotos cadastradas.</span>
+            </div>
+
+            <!-- Lightbox -->
+            <div class="o_os_lightbox o_hidden">
+                <div class="o_os_lightbox_backdrop"></div>
+                <div class="o_os_lightbox_content">
+                    <button class="o_os_close_lightbox">&#215;</button>
+                    <img class="o_os_lightbox_img" src="" alt=""/>
+                    <div class="o_os_lightbox_info">
+                        <span class="o_os_lightbox_caption"></span>
+                        <span class="o_os_lightbox_counter"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Herança da view da OS: aba Foto com grupos por setor -->
+    <record id="ordem_servico_form_inherit_photos" model="ir.ui.view">
+        <field name="name">ordem.servico.form.inherit.photos</field>
+        <field name="model">ordem.servico</field>
+        <field name="inherit_id" ref="ordem_servico.ordem_servico_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='Fotos']" position="replace">
+                <page string="Fotos" name="Fotos">
+                    <group string="Fotos por Setor">
+                        <group string="Produção">
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'producao'}"
+                                    string="Anexar Foto - Produção"
+                                    class="oe_highlight"/>
+                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                                   domain="[('setor','=','producao')]"
+                                   context="{'default_setor': 'producao'}"
+                                   options="{'create': false}"/>
+                        </group>
+                        <group string="Acabamento">
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'acabamento'}"
+                                    string="Anexar Foto - Acabamento"
+                                    class="oe_highlight"/>
+                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                                   domain="[('setor','=','acabamento')]"
+                                   context="{'default_setor': 'acabamento'}"
+                                   options="{'create': false}"/>
+                        </group>
+                        <group string="Inspeção">
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'inspecao'}"
+                                    string="Anexar Foto - Inspeção"
+                                    class="oe_highlight"/>
+                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                                   domain="[('setor','=','inspecao')]"
+                                   context="{'default_setor': 'inspecao'}"
+                                   options="{'create': false}"/>
+                        </group>
+                        <group string="Embalagem">
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'embalagem'}"
+                                    string="Anexar Foto - Embalagem"
+                                    class="oe_highlight"/>
+                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                                   domain="[('setor','=','embalagem')]"
+                                   context="{'default_setor': 'embalagem'}"
+                                   options="{'create': false}"/>
+                        </group>
+                        <group string="Entrega">
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'entrega'}"
+                                    string="Anexar Foto - Entrega"
+                                    class="oe_highlight"/>
+                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                                   domain="[('setor','=','entrega')]"
+                                   context="{'default_setor': 'entrega'}"
+                                   options="{'create': false}"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

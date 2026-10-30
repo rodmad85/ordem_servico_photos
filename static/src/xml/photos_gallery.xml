@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="os_fotos_gallery" name="Galeria de Fotos OS">
+        <div class="o_os_fotos_gallery">
+            <div t-if="attachments.length" class="o_os_fotos_grid">
+                <t t-foreach="attachments" t-as="att" t-index="idx">
+                    <img t-att-src="att.datas ? ('data:' + att.mimetype + ';base64,' + att.datas) : (att.url || '/web/content/' + att.id)"
+                         t-att-title="att.name"
+                         t-att-data-index="idx"
+                         class="o_os_foto_thumb"
+                         alt=""/>
+                </t>
+            </div>
+            <div t-if="!attachments.length" class="o_os_fotos_empty">
+                <span>Sem fotos cadastradas.</span>
+            </div>
+
+            <!-- Lightbox -->
+            <div class="o_os_lightbox o_hidden">
+                <div class="o_os_lightbox_backdrop"></div>
+                <div class="o_os_lightbox_content">
+                    <button class="o_os_close_lightbox">&times;</button>
+                    <img class="o_os_lightbox_img" src="" alt=""/>
+                    <div class="o_os_lightbox_info">
+                        <span class="o_os_lightbox_caption"></span>
+                        <span class="o_os_lightbox_counter"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>
