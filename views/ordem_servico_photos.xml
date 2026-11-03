@@ -11,8 +11,7 @@
                     <field name="setor" string="Setor"/>
                 </group>
                 <group string="Fotos">
-                    <field name="setor" widget="os_fotos_multi_upload"
-                           options="{'setor': 'setor', 'ordem_servico_id': active_id}"/>
+                    <field name="setor" widget="os_fotos_multi_upload"/>
                 </group>
             </form>
         </field>
