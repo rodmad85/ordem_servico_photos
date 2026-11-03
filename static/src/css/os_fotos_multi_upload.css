@@ -1,0 +1,62 @@
+.o_os_multi_upload {
+    padding: 12px;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.o_os_upload_zone {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    border-radius: 4px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+.o_os_upload_zone:hover {
+    border-color: #71a3d7;
+    background: #f0f7ff;
+}
+.o_os_file_input {
+    display: none;
+}
+.o_os_add_more {
+    font-size: 14px;
+}
+.o_os_upload_hint {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: #666;
+}
+.o_os_files_list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    background: #fff;
+}
+.o_os_file_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+}
+.o_os_file_item:last-child {
+    border-bottom: none;
+}
+.o_os_remove_file {
+    color: #d33;
+    font-size: 12px;
+    padding: 2px 8px;
+    border: 1px solid #d33;
+    border-radius: 3px;
+    background: none;
+    cursor: pointer;
+}
+.o_os_remove_file:hover {
+    background: #d33;
+    color: #fff;
+}

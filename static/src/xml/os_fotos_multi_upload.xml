@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="os_fotos_multi_upload" name="Upload Múltiplo de Fotos OS">
+        <div class="o_os_multi_upload">
+            <div class="o_os_upload_zone">
+                <input type="file" class="o_os_file_input" multiple="multiple" accept="image/*"/>
+                <button class="o_os_add_more btn btn-secondary oe_link">
+                    <i class="fa fa-plus"/> Selecionar Fotos
+                </button>
+                <span class="o_os_upload_hint">
+                    Selecione uma ou mais imagens de uma vez. No celular, abre a câmera/galeria.
+                </span>
+            </div>
+            <div class="o_os_files_list"></div>
+            <div class="o_os_upload_actions mt16">
+                <button class="o_os_upload_btn btn btn-primary oe_highlight" style="display:none">
+                    Enviar
+                </button>
+            </div>
+        </div>
+    </template>
+</odoo>

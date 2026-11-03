@@ -3,5 +3,3 @@ access_os_fotos_linha_user,os.fotos.linha.user,model_os_fotos_linha,ordem_servic
 access_os_fotos_linha_admin,os.fotos.linha.admin,model_os_fotos_linha,ordem_servico.ordem_admin,1,1,1,1
 access_os_fotos_wizard_user,os.fotos.wizard.user,model_os_fotos_wizard,ordem_servico.ordem_user,1,1,1,1
 access_os_fotos_wizard_admin,os.fotos.wizard.admin,model_os_fotos_wizard,ordem_servico.ordem_admin,1,1,1,1
-access_os_fotos_wizard_linha_user,os.fotos.wizard.linha.user,model_os_fotos_wizard_linha,ordem_servico.ordem_user,1,1,1,1
-access_os_fotos_wizard_linha_admin,os.fotos.wizard.linha.admin,model_os_fotos_wizard_linha,ordem_servico.ordem_admin,1,1,1,1
