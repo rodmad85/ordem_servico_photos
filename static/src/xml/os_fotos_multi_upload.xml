@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="os_fotos_multi_upload" name="Upload Múltiplo de Fotos OS">
+    <template id="os_fotos_multi_upload" name="Upload Múltiplo de Fotos OS" t-name="ordem_servico_photos.os_fotos_multi_upload">
         <div class="o_os_multi_upload">
             <div class="o_os_upload_zone">
                 <input type="file" class="o_os_file_input" multiple="multiple" accept="image/*"/>
