@@ -13,11 +13,19 @@
                 <group string="Fotos">
                     <field name="linhas" widget="one2many_list" nolabel="1">
                         <tree editable="bottom">
-                            <field name="arquivo" filename="nome_arquivo" widget="image"/>
+                            <field name="arquivo" filename="nome_arquivo"/>
                             <field name="nome_arquivo"/>
                         </tree>
                     </field>
                 </group>
+                <footer>
+                    <button name="action_adicionar_linha" type="object"
+                            string="Adicionar Foto" class="oe_link"/>
+                    <button string="Cancelar" class="btn_secondary"
+                            special="cancel"/>
+                    <button name="action_anexar" type="object"
+                            string="Anexar Fotos" class="oe_highlight"/>
+                </footer>
             </form>
         </field>
     </record>

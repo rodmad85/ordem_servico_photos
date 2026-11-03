@@ -43,7 +43,7 @@ class OsFotosWizardLinha(models.TransientModel):
         'os.fotos.wizard', string='Wizard', ondelete='cascade',
         required=True, readonly=True)
     arquivo = fields.Binary(
-        string='Arquivo de Imagem', attachment=True, required=True)
+        string='Arquivo de Imagem', attachment=True)
     nome_arquivo = fields.Char(string='Nome do Arquivo')
 
 
@@ -63,6 +63,20 @@ class OsFotosWizard(models.TransientModel):
         string='Setor', required=True)
     linhas = fields.One2many(
         'os.fotos.wizard.linha', 'wizard_id', string='Fotos')
+
+    def action_adicionar_linha(self):
+        self.ensure_one()
+        self.write({
+            'linhas': [(0, 0, {})]
+        })
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'os.fotos.wizard',
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'new',
+            'context': dict(self.env.context),
+        }
 
     def action_anexar(self):
         self.ensure_one()
