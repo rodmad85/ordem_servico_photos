@@ -9,7 +9,14 @@
             <form string="Anexar Foto">
                 <group>
                     <field name="setor" string="Setor"/>
-                    <field name="arquivo" filename="nome_arquivo" widget="image"/>
+                </group>
+                <group string="Fotos">
+                    <field name="linhas" widget="one2many_list" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="arquivo" filename="nome_arquivo" widget="image"/>
+                            <field name="nome_arquivo"/>
+                        </tree>
+                    </field>
                 </group>
             </form>
         </field>

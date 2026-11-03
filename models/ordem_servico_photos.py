@@ -35,6 +35,18 @@ class OsFotosLinha(models.Model):
         return record
 
 
+class OsFotosWizardLinha(models.TransientModel):
+    _name = "os.fotos.wizard.linha"
+    _description = "Linha de Anexo de Foto"
+
+    wizard_id = fields.Many2one(
+        'os.fotos.wizard', string='Wizard', ondelete='cascade',
+        required=True, readonly=True)
+    arquivo = fields.Binary(
+        string='Arquivo de Imagem', attachment=True, required=True)
+    nome_arquivo = fields.Char(string='Nome do Arquivo')
+
+
 class OsFotosWizard(models.TransientModel):
     _name = "os.fotos.wizard"
     _description = "Anexar Foto à OS"
@@ -49,28 +61,30 @@ class OsFotosWizard(models.TransientModel):
          ('embalagem', 'Embalagem'),
          ('entrega', 'Entrega')],
         string='Setor', required=True)
-    arquivo = fields.Binary(
-        string='Arquivo de Imagem', attachment=True, required=True)
-    nome_arquivo = fields.Char(string='Nome do Arquivo')
+    linhas = fields.One2many(
+        'os.fotos.wizard.linha', 'wizard_id', string='Fotos')
 
     def action_anexar(self):
         self.ensure_one()
-        if not self.arquivo:
+        if not self.linhas:
             from odoo.exceptions import ValidationError
-            raise ValidationError(_("Selecione um arquivo de imagem."))
-        attachment = self.env['ir.attachment'].create({
-            'name': self.nome_arquivo or 'foto.jpg',
-            'type': 'binary',
-            'datas': self.arquivo,
-            'res_model': 'ordem.servico',
-            'res_id': self.ordem_servico_id.id,
-        })
-        self.env['os.fotos.linha'].create({
-            'ordem_servico_id': self.ordem_servico_id.id,
-            'setor': self.setor,
-            'attachment_id': attachment.id,
-            'name': attachment.name,
-        })
+            raise ValidationError(_("Adicione ao menos uma foto para anexar."))
+        for linha in self.linhas:
+            if not linha.arquivo:
+                continue
+            attachment = self.env['ir.attachment'].create({
+                'name': linha.nome_arquivo or 'foto.jpg',
+                'type': 'binary',
+                'datas': linha.arquivo,
+                'res_model': 'ordem.servico',
+                'res_id': self.ordem_servico_id.id,
+            })
+            self.env['os.fotos.linha'].create({
+                'ordem_servico_id': self.ordem_servico_id.id,
+                'setor': self.setor,
+                'attachment_id': attachment.id,
+                'name': attachment.name,
+            })
         return {'type': 'ir.actions.act_window_close'}
 
 
