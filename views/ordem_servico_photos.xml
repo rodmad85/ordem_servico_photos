@@ -11,7 +11,7 @@
                     <field name="setor" string="Setor"/>
                 </group>
                 <group string="Fotos">
-                    <field name="setor" widget="os_fotos_multi_upload"/>
+                    <field name="widget_area" widget="os_fotos_multi_upload" nolabel="1"/>
                 </group>
             </form>
         </field>

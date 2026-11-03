@@ -49,6 +49,7 @@ class OsFotosWizard(models.TransientModel):
          ('embalagem', 'Embalagem'),
          ('entrega', 'Entrega')],
         string='Setor', required=True)
+    widget_area = fields.Char(string='Área de Upload', readonly=True)
 
     def action_anexar(self):
         # Upload é feito diretamente pelo widget JS via RPC
