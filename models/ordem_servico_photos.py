@@ -22,7 +22,13 @@ class OsFotosLinha(models.Model):
     attachment_id = fields.Many2one(
         'ir.attachment', string='Arquivo', ondelete='cascade',
         required=True)
-    datas = fields.Datetime(string='Data', default=fields.Datetime.now,
+    datas = fields.Binary(
+        string='Arquivo', related='attachment_id.datas', store=True, readonly=True)
+    mimetype = fields.Char(
+        string='Mimetype', related='attachment_id.mimetype', store=True, readonly=True)
+    name_attach = fields.Char(
+        string='Nome', related='attachment_id.name', store=True, readonly=True)
+    datas_create = fields.Datetime(string='Data', default=fields.Datetime.now,
                             store=True, readonly=True)
     user_id = fields.Many2one(
         'res.users', string='Usuário',
