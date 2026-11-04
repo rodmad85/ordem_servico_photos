@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="os_fotos_preview" name="Preview de Fotos" t-name="ordem_servico_photos.os_fotos_preview">
+        <div class="o_os_photos_preview">
+            <t t-foreach="props.record.data[props.name]" t-as="file" t-key="file">
+                <a href="#" t-att-data-id="file.id" class="o_os_photo_thumb" t-on-click="onFileClick">
+                    <img t-att-src="'/web/image/ir.attachment/' + file.id + '/datas?width=128&amp;height=128'" alt=""/>
+                </a>
+            </t>
+            <div t-if="state.open" class="o_os_lightbox" t-on-click="onClose">
+                <div class="o_os_lightbox_content">
+                    <img t-att-src="state.imageUrl" t-att-alt="state.name"/>
+                    <div class="o_os_lightbox_name" t-esc="state.name"/>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

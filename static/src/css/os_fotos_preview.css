@@ -1,0 +1,51 @@
+.o_os_photos_preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px;
+}
+.o_os_photo_thumb {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 128px;
+    height: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9;
+}
+.o_os_photo_thumb img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+}
+.o_os_lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.o_os_lightbox_content {
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.o_os_lightbox_content img {
+    max-width: 90vw;
+    max-height: 80vh;
+    object-fit: contain;
+}
+.o_os_lightbox_name {
+    color: #fff;
+    margin-top: 8px;
+    font-size: 13px;
+}

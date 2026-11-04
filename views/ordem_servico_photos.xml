@@ -6,7 +6,7 @@
         <field name="name">os.fotos.wizard.form</field>
         <field name="model">os.fotos.wizard</field>
         <field name="arch" type="xml">
-            <form string="Anexar Fotos por Setor">
+            <form string="Anexar Fotos por Setor" class="o_form_view o_form_nosheet">
                 <group>
                     <field name="setor" string="Setor"/>
                     <field name="attachment_ids" widget="many2many_binary" string="Selecionar Arquivos"/>
@@ -36,39 +36,24 @@
                 <page string="Fotos" name="Fotos">
                     <group string="Fotos por Setor">
                         <group string="Produção">
-                            <button name="action_anexar_foto" type="object"
-                                    context="{'setor': 'producao'}"
-                                    string="Adicionar Fotos - Produção"
-                                    class="oe_highlight"/>
-                            <field name="fotos_producao" widget="many2many_binary" nolabel="1"/>
+
+                            <field name="fotos_producao" widget="os_fotos_preview" nolabel="1"/>
                         </group>
                         <group string="Acabamento">
-                            <button name="action_anexar_foto" type="object"
-                                    context="{'setor': 'acabamento'}"
-                                    string="Adicionar Fotos - Acabamento"
-                                    class="oe_highlight"/>
-                            <field name="fotos_acabamento" widget="many2many_binary" nolabel="1"/>
+
+                            <field name="fotos_acabamento" widget="os_fotos_preview" nolabel="1"/>
                         </group>
                         <group string="Inspeção">
-                            <button name="action_anexar_foto" type="object"
-                                    context="{'setor': 'inspecao'}"
-                                    string="Adicionar Fotos - Inspeção"
-                                    class="oe_highlight"/>
-                            <field name="fotos_inspecao" widget="many2many_binary" nolabel="1"/>
+
+                            <field name="fotos_inspecao" widget="os_fotos_preview" nolabel="1"/>
                         </group>
                         <group string="Embalagem">
-                            <button name="action_anexar_foto" type="object"
-                                    context="{'setor': 'embalagem'}"
-                                    string="Adicionar Fotos - Embalagem"
-                                    class="oe_highlight"/>
-                            <field name="fotos_embalagem" widget="many2many_binary" nolabel="1"/>
+
+                            <field name="fotos_embalagem" widget="os_fotos_preview" nolabel="1"/>
                         </group>
                         <group string="Entrega">
-                            <button name="action_anexar_foto" type="object"
-                                    context="{'setor': 'entrega'}"
-                                    string="Adicionar Fotos - Entrega"
-                                    class="oe_highlight"/>
-                            <field name="fotos_entrega" widget="many2many_binary" nolabel="1"/>
+
+                            <field name="fotos_entrega" widget="os_fotos_preview" nolabel="1"/>
                         </group>
                     </group>
                 </page>
