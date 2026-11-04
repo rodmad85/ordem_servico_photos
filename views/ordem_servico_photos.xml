@@ -6,11 +6,11 @@
         <field name="name">os.fotos.wizard.form</field>
         <field name="model">os.fotos.wizard</field>
         <field name="arch" type="xml">
-            <form string="Anexar Foto por Setor">
+            <form string="Anexar Foto por Setor" class="o_form_view o_form_nosheet">
                 <group>
                     <field name="setor" string="Setor"/>
                 </group>
-                <group string="Fotos">
+                <group string="Fotos" style="width: 100%;">
                     <field name="linhas" widget="one2many_list" nolabel="1">
                         <tree editable="bottom">
                             <field name="arquivo" filename="nome_arquivo"/>
@@ -21,10 +21,10 @@
                 <footer>
                     <button name="action_adicionar_linha" type="object"
                             string="Adicionar Foto" class="oe_link"/>
-                    <button string="Cancelar" class="btn_secondary"
+                    <button string="Cancelar" class="btn-secondary"
                             special="cancel"/>
                     <button name="action_anexar" type="object"
-                            string="Anexar Fotos" class="oe_highlight"/>
+                            string="Anexar Fotos" class="btn-primary"/>
                 </footer>
             </form>
         </field>
