@@ -1,53 +1,45 @@
 import { Component, useState } from '@odoo/owl';
 import { registry } from '@web/core/registry';
+import { useService } from '@web/core/utils/hooks';
 
 export class OsFotosMultiUpload extends Component {
     setup() {
-        this.state = useState({
-            uploading: false,
-        });
+        this.state = useState({ uploading: false });
+        this.orm = useService('orm');
+        this.action = useService('action');
     }
 
     async onFilesSelected(ev) {
-        const files = Array.from(ev.target.files);
-        if (!files.length) {
-            return;
-        }
-        const ordemServicoId = this.props.record.data.ordem_servico_id?.[0];
-        const setor = this.props.record.data.setor || 'producao';
-        if (!ordemServicoId) {
-            console.error('Ordem de Serviço não definida');
-            return;
-        }
-        this.state.uploading = true;
         try {
+            const files = Array.from(ev.target.files || []);
+            if (!files.length) return;
+
+            const ordemServicoId = this.props.record.data.ordem_servico_id?.[0];
+            const setor = this.props.record.data.setor || 'producao';
+            if (!ordemServicoId) {
+                console.error('OS não definida');
+                return;
+            }
+
+            this.state.uploading = true;
             for (const file of files) {
                 const base64 = await this.toBase64(file);
-                const attachmentId = await this.env.services.rpc.call({
-                    model: 'ir.attachment',
-                    method: 'create',
-                    args: [{
-                        name: file.name,
-                        type: 'binary',
-                        datas: base64.split(',')[1],
-                        res_model: 'ordem.servico',
-                        res_id: ordemServicoId,
-                    }],
+                const attachmentId = await this.orm.create('ir.attachment', {
+                    name: file.name,
+                    type: 'binary',
+                    datas: base64.split(',')[1],
+                    res_model: 'ordem.servico',
+                    res_id: ordemServicoId,
                 });
-                await this.env.services.rpc.call({
-                    model: 'os.fotos.linha',
-                    method: 'create',
-                    args: [{
-                        ordem_servico_id: ordemServicoId,
-                        setor: setor,
-                        attachment_id: attachmentId,
-                        name: file.name,
-                    }],
+                await this.orm.create('os.fotos.linha', {
+                    ordem_servico_id: ordemServicoId,
+                    setor: setor,
+                    attachment_id: attachmentId,
+                    name: file.name,
                 });
             }
-            // Fechar o wizard e reabrir o form da OS para recarregar a listagem
-            this.env.services.action.closeDialog();
-            this.env.services.action.doAction({
+            await this.action.closeDialog();
+            await this.action.doAction({
                 type: 'ir.actions.act_window',
                 res_model: 'ordem.servico',
                 res_id: ordemServicoId,
@@ -55,7 +47,7 @@ export class OsFotosMultiUpload extends Component {
                 target: 'current',
             });
         } catch (error) {
-            console.error(error);
+            console.error('Erro upload fotos:', error);
         } finally {
             this.state.uploading = false;
             ev.target.value = '';
@@ -63,10 +55,11 @@ export class OsFotosMultiUpload extends Component {
     }
 
     toBase64(file) {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
         });
     }
 }
