@@ -8,7 +8,7 @@ odoo.define('ordem_servico_photos.photos_gallery', function (require) {
     const _t = core._t;
 
     const PhotosGallery = AbstractField.extend({
-        template: 'os_fotos_gallery',
+        template: 'ordem_servico_photos.os_fotos_gallery',
         events: {
             'click .o_os_foto_thumb': '_onClickThumb',
             'click .o_os_close_lightbox': '_onCloseLightbox',

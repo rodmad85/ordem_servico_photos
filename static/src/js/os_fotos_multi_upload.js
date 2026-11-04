@@ -8,7 +8,7 @@ odoo.define('ordem_servico_photos.os_fotos_multi_upload', function (require) {
     const _t = core._t;
 
     const OsFotosMultiUpload = AbstractField.extend({
-        template: 'os_fotos_multi_upload',
+        template: 'ordem_servico_photos.os_fotos_multi_upload',
         events: {
             'change .o_os_file_input': '_onFilesSelected',
             'click .o_os_add_more': '_onAddMore',
