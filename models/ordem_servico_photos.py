@@ -42,18 +42,6 @@ class OsFotosLinha(models.Model):
         return record
 
 
-class OsFotosWizardLinha(models.TransientModel):
-    _name = "os.fotos.wizard.linha"
-    _description = "Linha de Anexo de Foto"
-
-    wizard_id = fields.Many2one(
-        'os.fotos.wizard', string='Wizard', ondelete='cascade',
-        required=True, readonly=True)
-    arquivo = fields.Binary(
-        string='Arquivo de Imagem', attachment=True)
-    nome_arquivo = fields.Char(string='Nome do Arquivo')
-
-
 class OsFotosWizard(models.TransientModel):
     _name = "os.fotos.wizard"
     _description = "Anexar Foto à OS"
@@ -68,51 +56,11 @@ class OsFotosWizard(models.TransientModel):
          ('embalagem', 'Embalagem'),
          ('entrega', 'Entrega')],
         string='Setor', required=True)
-    linhas = fields.One2many(
-        'os.fotos.wizard.linha', 'wizard_id', string='Fotos')
-
-    def action_adicionar_linha(self):
-        self.ensure_one()
-        self.write({
-            'linhas': [(0, 0, {})]
-        })
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'os.fotos.wizard',
-            'res_id': self.id,
-            'view_mode': 'form',
-            'target': 'new',
-            'context': dict(self.env.context),
-        }
+    widget_area = fields.Char(string='Área de Upload', readonly=True)
 
     def action_anexar(self):
-        self.ensure_one()
-        if not self.linhas:
-            raise ValidationError(_("Adicione ao menos uma foto para anexar."))
-        ordem_servico_id = self.ordem_servico_id.id
-        for linha in self.linhas:
-            if not linha.arquivo:
-                continue
-            attachment = self.env['ir.attachment'].create({
-                'name': linha.nome_arquivo or 'foto.jpg',
-                'type': 'binary',
-                'datas': linha.arquivo,
-                'res_model': 'ordem.servico',
-                'res_id': ordem_servico_id,
-            })
-            self.env['os.fotos.linha'].create({
-                'ordem_servico_id': ordem_servico_id,
-                'setor': self.setor,
-                'attachment_id': attachment.id,
-                'name': attachment.name,
-            })
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'ordem.servico',
-            'res_id': ordem_servico_id,
-            'view_mode': 'form',
-            'target': 'current',
-        }
+        # Upload é feito diretamente pelo widget JS via RPC
+        return {'type': 'ir.actions.act_window_close'}
 
 
 class OrdemServico(models.Model):
