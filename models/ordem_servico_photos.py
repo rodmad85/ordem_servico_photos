@@ -89,6 +89,7 @@ class OsFotosWizard(models.TransientModel):
         self.ensure_one()
         if not self.linhas:
             raise ValidationError(_("Adicione ao menos uma foto para anexar."))
+        ordem_servico_id = self.ordem_servico_id.id
         for linha in self.linhas:
             if not linha.arquivo:
                 continue
@@ -97,15 +98,21 @@ class OsFotosWizard(models.TransientModel):
                 'type': 'binary',
                 'datas': linha.arquivo,
                 'res_model': 'ordem.servico',
-                'res_id': self.ordem_servico_id.id,
+                'res_id': ordem_servico_id,
             })
             self.env['os.fotos.linha'].create({
-                'ordem_servico_id': self.ordem_servico_id.id,
+                'ordem_servico_id': ordem_servico_id,
                 'setor': self.setor,
                 'attachment_id': attachment.id,
                 'name': attachment.name,
             })
-        return {'type': 'ir.actions.act_window_close'}
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'ordem.servico',
+            'res_id': ordem_servico_id,
+            'view_mode': 'form',
+            'target': 'current',
+        }
 
 
 class OrdemServico(models.Model):
