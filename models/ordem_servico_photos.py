@@ -1,57 +1,5 @@
 # -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
-
-
-class OsFotosLinha(models.Model):
-    _name = "os.fotos.linha"
-    _description = "Linha de Foto da OS"
-    _order = "create_date desc"
-
-    name = fields.Char(string='Nome', store=True)
-    ordem_servico_id = fields.Many2one(
-        'ordem.servico', string='Ordem de Serviço',
-        ondelete='cascade', index=True, required=True)
-    setor = fields.Selection(
-        [('producao', 'Produção'),
-         ('acabamento', 'Acabamento'),
-         ('inspecao', 'Inspeção'),
-         ('embalagem', 'Embalagem'),
-         ('entrega', 'Entrega')],
-        string='Setor', required=True, store=True)
-    attachment_id = fields.Many2one(
-        'ir.attachment', string='Arquivo', ondelete='cascade',
-        required=True)
-    datas = fields.Binary(
-        string='Arquivo', related='attachment_id.datas', store=True, readonly=True)
-    mimetype = fields.Char(
-        string='Mimetype', related='attachment_id.mimetype', store=True, readonly=True)
-    name_attach = fields.Char(
-        string='Nome', related='attachment_id.name', store=True, readonly=True)
-    datas_create = fields.Datetime(string='Data', default=fields.Datetime.now,
-                            store=True, readonly=True)
-    user_id = fields.Many2one(
-        'res.users', string='Usuário',
-        default=lambda self: self.env.user, store=True, readonly=True)
-
-    @api.model
-    def create(self, vals):
-        record = super().create(vals)
-        if record.attachment_id and not record.name:
-            record.name = record.attachment_id.name
-        return record
-
-
-class OsFotosWizardLinha(models.TransientModel):
-    _name = "os.fotos.wizard.linha"
-    _description = "Linha de Anexo de Foto"
-
-    wizard_id = fields.Many2one(
-        'os.fotos.wizard', string='Wizard', ondelete='cascade',
-        required=True, readonly=True)
-    arquivo = fields.Binary(
-        string='Arquivo de Imagem', attachment=True)
-    nome_arquivo = fields.Char(string='Nome do Arquivo')
 
 
 class OsFotosWizard(models.TransientModel):
@@ -68,58 +16,45 @@ class OsFotosWizard(models.TransientModel):
          ('embalagem', 'Embalagem'),
          ('entrega', 'Entrega')],
         string='Setor', required=True)
-    linhas = fields.One2many(
-        'os.fotos.wizard.linha', 'wizard_id', string='Fotos')
-
-    def action_adicionar_linha(self):
-        self.ensure_one()
-        self.write({
-            'linhas': [(0, 0, {})]
-        })
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'os.fotos.wizard',
-            'res_id': self.id,
-            'view_mode': 'form',
-            'target': 'new',
-            'context': dict(self.env.context),
-        }
+    attachment_ids = fields.Many2many(
+        'ir.attachment', string='Arquivos')
 
     def action_anexar(self):
         self.ensure_one()
-        if not self.linhas:
-            raise ValidationError(_("Adicione ao menos uma foto para anexar."))
-        ordem_servico_id = self.ordem_servico_id.id
-        for linha in self.linhas:
-            if not linha.arquivo:
-                continue
-            attachment = self.env['ir.attachment'].create({
-                'name': linha.nome_arquivo or 'foto.jpg',
-                'type': 'binary',
-                'datas': linha.arquivo,
-                'res_model': 'ordem.servico',
-                'res_id': ordem_servico_id,
-            })
-            self.env['os.fotos.linha'].create({
-                'ordem_servico_id': ordem_servico_id,
-                'setor': self.setor,
-                'attachment_id': attachment.id,
-                'name': attachment.name,
-            })
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'ordem.servico',
-            'res_id': ordem_servico_id,
-            'view_mode': 'form',
-            'target': 'current',
-        }
+        if not self.attachment_ids:
+            return {'type': 'ir.actions.act_window_close'}
+        setor = self.setor
+        if setor == 'producao':
+            self.ordem_servico_id.fotos_producao = [(4, att.id) for att in self.attachment_ids]
+        elif setor == 'acabamento':
+            self.ordem_servico_id.fotos_acabamento = [(4, att.id) for att in self.attachment_ids]
+        elif setor == 'inspecao':
+            self.ordem_servico_id.fotos_inspecao = [(4, att.id) for att in self.attachment_ids]
+        elif setor == 'embalagem':
+            self.ordem_servico_id.fotos_embalagem = [(4, att.id) for att in self.attachment_ids]
+        elif setor == 'entrega':
+            self.ordem_servico_id.fotos_entrega = [(4, att.id) for att in self.attachment_ids]
+        return {'type': 'ir.actions.act_window_close'}
 
 
 class OrdemServico(models.Model):
     _inherit = "ordem.servico"
 
-    fotos_linhas = fields.One2many(
-        'os.fotos.linha', 'ordem_servico_id', string='Fotos por Setor')
+    fotos_producao = fields.Many2many(
+        'ir.attachment', 'ordem_servico_fotos_producao_rel',
+        'ordem_servico_id', 'attachment_id', string='Fotos Produção')
+    fotos_acabamento = fields.Many2many(
+        'ir.attachment', 'ordem_servico_fotos_acabamento_rel',
+        'ordem_servico_id', 'attachment_id', string='Fotos Acabamento')
+    fotos_inspecao = fields.Many2many(
+        'ir.attachment', 'ordem_servico_fotos_inspecao_rel',
+        'ordem_servico_id', 'attachment_id', string='Fotos Inspeção')
+    fotos_embalagem = fields.Many2many(
+        'ir.attachment', 'ordem_servico_fotos_embalagem_rel',
+        'ordem_servico_id', 'attachment_id', string='Fotos Embalagem')
+    fotos_entrega = fields.Many2many(
+        'ir.attachment', 'ordem_servico_fotos_entrega_rel',
+        'ordem_servico_id', 'attachment_id', string='Fotos Entrega')
 
     def action_anexar_foto(self):
         self.ensure_one()

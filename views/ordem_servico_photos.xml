@@ -6,32 +6,21 @@
         <field name="name">os.fotos.wizard.form</field>
         <field name="model">os.fotos.wizard</field>
         <field name="arch" type="xml">
-            <form string="Anexar Foto por Setor" class="o_form_view o_form_nosheet">
+            <form string="Anexar Fotos por Setor">
                 <group>
                     <field name="setor" string="Setor"/>
-                </group>
-                <group string="Fotos" style="width: 100%;">
-                    <field name="linhas" widget="one2many_list" nolabel="1">
-                        <tree editable="bottom">
-                            <field name="arquivo" filename="nome_arquivo"/>
-                            <field name="nome_arquivo"/>
-                        </tree>
-                    </field>
+                    <field name="attachment_ids" widget="many2many_binary" string="Selecionar Arquivos"/>
                 </group>
                 <footer>
-                    <button name="action_adicionar_linha" type="object"
-                            string="Adicionar Foto" class="oe_link"/>
-                    <button string="Cancelar" class="btn-secondary"
-                            special="cancel"/>
-                    <button name="action_anexar" type="object"
-                            string="Anexar Fotos" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    <button name="action_anexar" type="object" string="Anexar" class="btn-primary"/>
                 </footer>
             </form>
         </field>
     </record>
 
     <record id="os_fotos_wizard_action" model="ir.actions.act_window">
-        <field name="name">Anexar Foto por Setor</field>
+        <field name="name">Anexar Fotos por Setor</field>
         <field name="res_model">os.fotos.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
@@ -45,69 +34,41 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='Fotos']" position="replace">
                 <page string="Fotos" name="Fotos">
-                    <button name="action_anexar_foto" type="object"
-                            string="Fotos por Setor"
-                            class="oe_highlight"/>
                     <group string="Fotos por Setor">
                         <group string="Produção">
-                            <field name="fotos_linhas" widget="one2many_list" nolabel="1"
-                                   domain="[('setor','=','producao')]"
-                                   context="{'default_setor': 'producao'}"
-                                   options="{'create': false}">
-                                <tree string="Fotos - Produção">
-                                    <field name="name"/>
-                                    <field name="user_id"/>
-                                    <field name="datas_create"/>
-                                </tree>
-                            </field>
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'producao'}"
+                                    string="Adicionar Fotos - Produção"
+                                    class="oe_highlight"/>
+                            <field name="fotos_producao" widget="many2many_binary" nolabel="1"/>
                         </group>
                         <group string="Acabamento">
-                            <field name="fotos_linhas" widget="one2many_list" nolabel="1"
-                                   domain="[('setor','=','acabamento')]"
-                                   context="{'default_setor': 'acabamento'}"
-                                   options="{'create': false}">
-                                <tree string="Fotos - Acabamento">
-                                    <field name="name"/>
-                                    <field name="user_id"/>
-                                    <field name="datas_create"/>
-                                </tree>
-                            </field>
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'acabamento'}"
+                                    string="Adicionar Fotos - Acabamento"
+                                    class="oe_highlight"/>
+                            <field name="fotos_acabamento" widget="many2many_binary" nolabel="1"/>
                         </group>
                         <group string="Inspeção">
-                            <field name="fotos_linhas" widget="one2many_list" nolabel="1"
-                                   domain="[('setor','=','inspecao')]"
-                                   context="{'default_setor': 'inspecao'}"
-                                   options="{'create': false}">
-                                <tree string="Fotos - Inspeção">
-                                    <field name="name"/>
-                                    <field name="user_id"/>
-                                    <field name="datas_create"/>
-                                </tree>
-                            </field>
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'inspecao'}"
+                                    string="Adicionar Fotos - Inspeção"
+                                    class="oe_highlight"/>
+                            <field name="fotos_inspecao" widget="many2many_binary" nolabel="1"/>
                         </group>
                         <group string="Embalagem">
-                            <field name="fotos_linhas" widget="one2many_list" nolabel="1"
-                                   domain="[('setor','=','embalagem')]"
-                                   context="{'default_setor': 'embalagem'}"
-                                   options="{'create': false}">
-                                <tree string="Fotos - Embalagem">
-                                    <field name="name"/>
-                                    <field name="user_id"/>
-                                    <field name="datas_create"/>
-                                </tree>
-                            </field>
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'embalagem'}"
+                                    string="Adicionar Fotos - Embalagem"
+                                    class="oe_highlight"/>
+                            <field name="fotos_embalagem" widget="many2many_binary" nolabel="1"/>
                         </group>
                         <group string="Entrega">
-                            <field name="fotos_linhas" widget="one2many_list" nolabel="1"
-                                   domain="[('setor','=','entrega')]"
-                                   context="{'default_setor': 'entrega'}"
-                                   options="{'create': false}">
-                                <tree string="Fotos - Entrega">
-                                    <field name="name"/>
-                                    <field name="user_id"/>
-                                    <field name="datas_create"/>
-                                </tree>
-                            </field>
+                            <button name="action_anexar_foto" type="object"
+                                    context="{'setor': 'entrega'}"
+                                    string="Adicionar Fotos - Entrega"
+                                    class="oe_highlight"/>
+                            <field name="fotos_entrega" widget="many2many_binary" nolabel="1"/>
                         </group>
                     </group>
                 </page>
