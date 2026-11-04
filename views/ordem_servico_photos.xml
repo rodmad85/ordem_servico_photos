@@ -11,8 +11,21 @@
                     <field name="setor" string="Setor"/>
                 </group>
                 <group string="Fotos">
-                    <field name="widget_area" widget="os_fotos_multi_upload" nolabel="1"/>
+                    <field name="linhas" widget="one2many_list" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="arquivo" filename="nome_arquivo"/>
+                            <field name="nome_arquivo"/>
+                        </tree>
+                    </field>
                 </group>
+                <footer>
+                    <button name="action_adicionar_linha" type="object"
+                            string="Adicionar Foto" class="oe_link"/>
+                    <button string="Cancelar" class="btn_secondary"
+                            special="cancel"/>
+                    <button name="action_anexar" type="object"
+                            string="Anexar Fotos" class="oe_highlight"/>
+                </footer>
             </form>
         </field>
     </record>
@@ -23,37 +36,6 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
-
-    <!-- Template da galeria de miniaturas com zoom -->
-    <template id="os_fotos_gallery" name="Galeria de Fotos OS">
-        <div class="o_os_fotos_gallery">
-            <div t-if="attachments.length" class="o_os_fotos_grid">
-                <t t-foreach="attachments" t-as="att" t-index="idx">
-                    <img t-att-src="att.datas ? ('data:' + att.mimetype + ';base64,' + att.datas) : (att.url || '/web/content/' + att.id)"
-                         t-att-title="att.name"
-                         t-att-data-index="idx"
-                         class="o_os_foto_thumb"
-                         alt=""/>
-                </t>
-            </div>
-            <div t-if="!attachments.length" class="o_os_fotos_empty">
-                <span>Sem fotos cadastradas.</span>
-            </div>
-
-            <!-- Lightbox -->
-            <div class="o_os_lightbox o_hidden">
-                <div class="o_os_lightbox_backdrop"></div>
-                <div class="o_os_lightbox_content">
-                    <button class="o_os_close_lightbox">&#215;</button>
-                    <img class="o_os_lightbox_img" src="" alt=""/>
-                    <div class="o_os_lightbox_info">
-                        <span class="o_os_lightbox_caption"></span>
-                        <span class="o_os_lightbox_counter"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </template>
 
     <!-- Herança da view da OS: aba Foto com grupos por setor -->
     <record id="ordem_servico_form_inherit_photos" model="ir.ui.view">
@@ -69,7 +51,7 @@
                                     context="{'setor': 'producao'}"
                                     string="Anexar Foto - Produção"
                                     class="oe_highlight"/>
-                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                            <field name="fotos_linhas" widget="many2many_binary"
                                    domain="[('setor','=','producao')]"
                                    context="{'default_setor': 'producao'}"
                                    options="{'create': false}"/>
@@ -79,7 +61,7 @@
                                     context="{'setor': 'acabamento'}"
                                     string="Anexar Foto - Acabamento"
                                     class="oe_highlight"/>
-                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                            <field name="fotos_linhas" widget="many2many_binary"
                                    domain="[('setor','=','acabamento')]"
                                    context="{'default_setor': 'acabamento'}"
                                    options="{'create': false}"/>
@@ -89,7 +71,7 @@
                                     context="{'setor': 'inspecao'}"
                                     string="Anexar Foto - Inspeção"
                                     class="oe_highlight"/>
-                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                            <field name="fotos_linhas" widget="many2many_binary"
                                    domain="[('setor','=','inspecao')]"
                                    context="{'default_setor': 'inspecao'}"
                                    options="{'create': false}"/>
@@ -99,7 +81,7 @@
                                     context="{'setor': 'embalagem'}"
                                     string="Anexar Foto - Embalagem"
                                     class="oe_highlight"/>
-                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                            <field name="fotos_linhas" widget="many2many_binary"
                                    domain="[('setor','=','embalagem')]"
                                    context="{'default_setor': 'embalagem'}"
                                    options="{'create': false}"/>
@@ -109,7 +91,7 @@
                                     context="{'setor': 'entrega'}"
                                     string="Anexar Foto - Entrega"
                                     class="oe_highlight"/>
-                            <field name="fotos_linhas" widget="os_fotos_gallery"
+                            <field name="fotos_linhas" widget="many2many_binary"
                                    domain="[('setor','=','entrega')]"
                                    context="{'default_setor': 'entrega'}"
                                    options="{'create': false}"/>
