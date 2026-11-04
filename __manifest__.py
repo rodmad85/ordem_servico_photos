@@ -16,12 +16,9 @@
         'ordem_servico',
         'web',
     ],
-    'assets': {
-        'web.assets_backend': [
-            'ordem_servico_photos/static/src/css/os_fotos_preview.css',
-            'ordem_servico_photos/static/src/js/os_fotos_preview.js',
-            'ordem_servico_photos/static/src/xml/os_fotos_preview.xml',
-        ],
-    },
-    'application': False,
+    'data': [
+        'security/ir.model.access.csv',
+        'views/ordem_servico_photos.xml',
+    ],
+    'installable': True,
 }

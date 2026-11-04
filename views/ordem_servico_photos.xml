@@ -37,23 +37,23 @@
                     <group string="Fotos por Setor">
                         <group string="Produção">
 
-                            <field name="fotos_producao" widget="os_fotos_preview" nolabel="1"/>
+                            <field name="fotos_producao" widget="many2many_binary" nolabel="1"/>
                         </group>
                         <group string="Acabamento">
 
-                            <field name="fotos_acabamento" widget="os_fotos_preview" nolabel="1"/>
+                            <field name="fotos_acabamento" widget="many2many_binary" nolabel="1"/>
                         </group>
                         <group string="Inspeção">
 
-                            <field name="fotos_inspecao" widget="os_fotos_preview" nolabel="1"/>
+                            <field name="fotos_inspecao" widget="many2many_binary" nolabel="1"/>
                         </group>
                         <group string="Embalagem">
 
-                            <field name="fotos_embalagem" widget="os_fotos_preview" nolabel="1"/>
+                            <field name="fotos_embalagem" widget="many2many_binary" nolabel="1"/>
                         </group>
                         <group string="Entrega">
 
-                            <field name="fotos_entrega" widget="os_fotos_preview" nolabel="1"/>
+                            <field name="fotos_entrega" widget="many2many_binary" nolabel="1"/>
                         </group>
                     </group>
                 </page>
